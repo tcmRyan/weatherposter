@@ -112,6 +112,7 @@ def fb_call(call, args=None):
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
+db = SQLAlchemy(app)
 
 
 def get_home():
