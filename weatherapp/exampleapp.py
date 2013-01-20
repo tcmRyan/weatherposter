@@ -11,8 +11,9 @@ from base64 import urlsafe_b64decode, urlsafe_b64encode
 
 import requests
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask import Flask, request, redirect, render_template, url_for
+from flask import request, redirect, render_template, url_for
 
+from weatherapp import app, db
 from models import User
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
@@ -218,6 +219,8 @@ def dbtest():
         email = request.form.get('email')
         zipcode = request.form.get('zipcode')
         user = User(name, email, zipcode)
+        import pdb
+        pdb.set_trace()
         db.session.add(user)
         db.session.commit()
         return render_template('close.html')

@@ -4,6 +4,7 @@ Jinja2==2.6
 SQLAlchemy==0.8.0b2
 Werkzeug==0.8.3
 distribute==0.6.34
+psycopg2==2.4.6
 requests==1.1.0
 stevedore==0.8
 virtualenv==1.8.4
