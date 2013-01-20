@@ -10,6 +10,7 @@ import hashlib
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 
 import requests
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask import Flask, request, redirect, render_template, url_for
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
