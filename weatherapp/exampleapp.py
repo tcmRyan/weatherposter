@@ -13,6 +13,8 @@ import requests
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask import Flask, request, redirect, render_template, url_for
 
+from models import User
+
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
 
@@ -107,14 +109,6 @@ def fb_call(call, args=None):
     url = "https://graph.facebook.com/{0}".format(call)
     r = requests.get(url, params=args)
     return json.loads(r.content)
-
-
-
-app = Flask(__name__)
-app.config.from_object(__name__)
-app.config.from_object('conf.Config')
-db = SQLAlchemy(app)
-
 
 def get_home():
     return 'https://' + request.host + '/'
@@ -215,9 +209,17 @@ def get_channel():
 def close():
     return render_template('close.html')
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    if app.config.get('FB_APP_ID') and app.config.get('FB_APP_SECRET'):
-        app.run(host='0.0.0.0', port=port)
+@app.route('/dbtest/', methods=['GET', 'POST'])
+def dbtest():
+    if request.method =='GET':
+        return render_template('dbtest.html')
     else:
-        print 'Cannot start application without Facebook App Id and Secret set'
+        name = request.form.get('name')
+        email = request.form.get('email')
+        zipcode = request.form.get('zipcode')
+        user = User(name, email, zipcode)
+        db.session.add(user)
+        db.session.commit()
+        return render_template('close.html')
+
+
