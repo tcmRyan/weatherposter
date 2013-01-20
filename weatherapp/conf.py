@@ -6,5 +6,7 @@ class Config(object):
     LOG_LEVEL = os.environ.get('LOG_LEVEL', 'DEBUG')
     FBAPI_APP_ID = os.environ.get('FACEBOOK_APP_ID')
     FBAPI_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
+    FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
+    FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
     FBAPI_SCOPE = ['user_likes', 'user_photos', 'user_photo_video_tags']
     SQLALCHEMY_DATABASE_URI = 'postgres://aspyosikanbibb:YdYQ9M2nGv3N6XyYlI8avu-sYw@ec2-54-243-176-239.compute-1.amazonaws.com:5432/d66077555gv3kg'

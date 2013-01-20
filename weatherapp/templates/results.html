@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<table>
+<thead>
+<tr>
+<td>Name</td>
+<td>Email</td>
+<td>zipcode</td>
+</tr>
+</thead>
+<tbody>
+{% for entry in users %}
+<tr>
+<td>{{entry.name}}</td>
+<td>{{entry.email}}</td>
+<td>{{entry.zipcode}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
