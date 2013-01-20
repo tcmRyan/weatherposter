@@ -219,10 +219,11 @@ def dbtest():
         email = request.form.get('email')
         zipcode = request.form.get('zipcode')
         user = User(name, email, zipcode)
-        import pdb
-        pdb.set_trace()
         db.session.add(user)
         db.session.commit()
-        return render_template('close.html')
+        all_users = User.query.all()
+        return render_template('results.html', users=all_users)
+
+
 
 
