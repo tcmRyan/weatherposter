@@ -7,6 +7,7 @@ import urllib
 import hmac
 import json
 import hashlib
+from datetime import datetime
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 
 import requests
@@ -14,7 +15,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask import request, redirect, render_template, url_for
 
 from weatherapp import app, db
-from models import User
+from models import User, Location
+import weather
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
@@ -230,9 +232,20 @@ def dbtest():
         db.session.add(user)
         db.session.commit()
         all_users = User.query.all()
-        print all_users
+        foo = Location.query.filter(Location.zipcode == zipcode)
+        #if not Location.query.filter(Location.zipcode == zipcode):
+        date = datetime.now()
+        new_location = Location(zipcode, date)
+        db.session.add(new_location)
+        db.session.commit()
         return render_template('results.html', users=all_users)
 
+@app.route('/weathertest/', methods=['POST'])
+def weathertest():
+    if request.method == 'POST':
+        zipcode = Location.query.all()[0].zipcode
+        description = weather.get_weather(zipcode)
+        render_template('test.html', description=description)
 
 
 
