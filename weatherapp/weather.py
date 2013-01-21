@@ -17,12 +17,14 @@ def eval_weather(weather, zipcode):
 	#Book Keeping in the DB
 	date = datetime.now()
 	entry = Location.query.filter(Location.zipcode == zipcode).update({'last_updated':date})
-	print weather
 
 	if not weather['data']['weather'][0]['weatherCode'] in ignore_codes:
 		description = get_description(weather['data']['weather'][0]['weatherCode'])
 		#send_notication(description)
 		return description
+	description = get_description(weather['data']['weather'][0]['weatherCode'])
+	print description
+	return description
 	
 
 def get_weather(zipcode):
@@ -31,14 +33,17 @@ def get_weather(zipcode):
 	format='json'
 	url = "http://free.worldweatheronline.com/feed/weather.ashx?q=%s&format=%s&num_of_days=%s&key=%s" % (zipcode, format, num_of_days, key)
 	weather = requests.get(url).json()
-	eval_weather(weather, zipcode)
+	return eval_weather(weather, zipcode)
+
 
 def get_description(code):
-	xmldoc = minidom.parse("wwoConditionCodes.xml")
+	doc = os.path.dirname(__file__)
+	xmldoc = minidom.parse(doc + "/wwoConditionCodes.xml")
 	itemlist = xmldoc.getElementsByTagName('condition')
 	for item in itemlist:
-		if item.getElementByTagName('code') == code:
-			return item.getElementByTagName('description').getText()
+		if item.getElementsByTagName('code')[0].firstChild.nodeValue == code:
+			print item.getElementsByTagName('description')[0].firstChild.nodeValue
+			return item.getElementsByTagName('description')[0].firstChild.nodeValue
 
 def update_db():
 	zipcodes = Location.query.all()

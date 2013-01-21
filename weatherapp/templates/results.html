@@ -16,7 +16,23 @@
 </tr>
 {% endfor %}
 </tbody>
-</table>
+</table></br>
+<table>
+<thead>
+<tr>
+<td>Zipcode</td>
+<td>Last Updated</td>
+</tr>
+</thead>
+<tbody>
+{% for zip in locations %}
+<tr>
+<td>{{zip.zipcode}}</td>
+<td>{{zip.last_updated}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table></br>
 <form action='{{url_for("weathertest")}}' method='POST'>
 	<input type='submit' value='Submit'>
 </form>

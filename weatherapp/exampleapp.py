@@ -22,9 +22,7 @@ FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
 
 app_url = 'https://graph.facebook.com/{0}'.format(FB_APP_ID)
-print "app_url %s" % app_url
 FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
-print requests.get(app_url)
 FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
 
 
@@ -123,7 +121,6 @@ def get_home():
 def get_token():
 
     if request.args.get('code', None):
-        print request.arg.get('code')
         return fbapi_auth(request.args.get('code'))[0]
 
     cookie_key = 'fbsr_{0}'.format(FB_APP_ID)
@@ -173,7 +170,6 @@ def index():
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
     if access_token:
-        print "Have access_token"
 
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
@@ -199,7 +195,6 @@ def index():
                    % (redir, FB_APP_ID, get_home()))
 
         url = request.url
-        print "url %s" % url
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, likes=likes,
@@ -207,8 +202,6 @@ def index():
             me=me, POST_TO_WALL=POST_TO_WALL, SEND_TO=SEND_TO, url=url,
             channel_url=channel_url, name=FB_APP_NAME)
     else:
-        print "No Token: sad face"
-        print "app_id=%s, token=%s, url=%s, channel_url=%s, name=%s" % (FB_APP_ID, access_token, request.url, channel_url, FB_APP_NAME)
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
 @app.route('/channel.html', methods=['GET', 'POST'])
@@ -232,20 +225,20 @@ def dbtest():
         db.session.add(user)
         db.session.commit()
         all_users = User.query.all()
-        foo = Location.query.filter(Location.zipcode == zipcode)
-        #if not Location.query.filter(Location.zipcode == zipcode):
-        date = datetime.now()
-        new_location = Location(zipcode, date)
-        db.session.add(new_location)
-        db.session.commit()
-        return render_template('results.html', users=all_users)
+        if Location.query.filter(Location.zipcode == zipcode).count() == 0:
+            date = datetime.now()
+            new_location = Location(zipcode, date)
+            db.session.add(new_location)
+            db.session.commit()
+        all_zipcodes = Location.query.all()
+        return render_template('results.html', users=all_users, locations=all_zipcodes)
 
 @app.route('/weathertest/', methods=['POST'])
 def weathertest():
     if request.method == 'POST':
         zipcode = Location.query.all()[0].zipcode
         description = weather.get_weather(zipcode)
-        render_template('test.html', description=description)
+        return render_template('test.html', description=description)
 
 
 
