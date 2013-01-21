@@ -18,13 +18,13 @@ class User(db.Model):
 class Location(db.Model):
 	zipcode = db.Column(db.String, primary_key=True)
 	last_updated = db.Column(db.DateTime)
-	notification_sent = db.Column(db.DateTime)
+	#notification_sent = db.Column(db.DateTime)
 
 
 	def __init__(self, zipcode, last_updated):
 		self.zipcode = zipcode
 		self.last_updated = last_updated
-		self.notification_sent = datetime.now()
+		#self.notification_sent = datetime.now()
 
 	def __repr__(self):
 		return '<zipcode %r>' % self.zipcode
