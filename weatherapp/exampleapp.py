@@ -156,6 +156,7 @@ def get_token():
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
+        print token
 
         return token
 
@@ -163,7 +164,6 @@ def get_token():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # print get_home()
-
 
     access_token = get_token()
     channel_url = url_for('get_channel', _external=True)

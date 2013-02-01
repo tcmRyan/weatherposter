@@ -20,7 +20,7 @@ def eval_weather(weather, zipcode):
 
 	if not weather['data']['weather'][0]['weatherCode'] in ignore_codes:
 		description = get_description(weather['data']['weather'][0]['weatherCode'])
-		#send_notication(description)
+		#send_notication(description, weather)
 		return description
 	description = get_description(weather['data']['weather'][0]['weatherCode'])
 	print description
@@ -49,5 +49,6 @@ def update_db():
 	zipcodes = Location.query.all()
 	for zipcode in zipcodes:
 		get_weather(zipcode)
+
 
 
