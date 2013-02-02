@@ -156,7 +156,6 @@ def get_token():
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
-        print token
 
         return token
 
@@ -172,6 +171,8 @@ def index():
     if access_token:
 
         me = fb_call('me', args={'access_token': access_token})
+        if User.query.filter(User.facebook_id == me['id']).count() == 0:
+            create_user(me)
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
         likes = fb_call('me/likes',
                         args={'access_token': access_token, 'limit': 4})
@@ -232,6 +233,23 @@ def dbtest():
             db.session.commit()
         all_zipcodes = Location.query.all()
         return render_template('results.html', users=all_users, locations=all_zipcodes)
+
+def create_user(user_dict):
+    facebook_id = user_dict['id']
+    name = user_dict['name']
+    email = user_dict['email']
+    profile_url = user_dict['link']
+    zipcode = None
+    db.session.add(user)
+    db.session.commit()
+    return
+
+def update_user():
+    token = get_token()
+     me = fb_call('me', args={'access_token': access_token})
+     record =  User.query.filter(User.facebook_id == me['id']).first()
+     record.zipcode = request.form['zipcode']
+     record.commit()
 
 @app.route('/weathertest/', methods=['POST'])
 def weathertest():
