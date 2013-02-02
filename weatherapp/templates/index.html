@@ -40,6 +40,9 @@
 {% block content %}
 <section class="clearfix" id="samples">
       <h1>Examples of the Facebook Graph API</h1>
+      <div>
+        {{me}}
+      </div>
       <div class="list">
         <h3>A few of your friends</h3>
         <ul class="friends">{% for friend in friends.data %}
