@@ -49,9 +49,9 @@ def get_description(code):
 			return item.getElementsByTagName('description')[0].firstChild.nodeValue
 
 def update_db():
-	zipcodes = Location.query.all()
-	for zipcode in zipcodes:
-		get_weather(zipcode)
+	locations = Location.query.all()
+	for location in locations:
+		get_weather(location.zipcode)
 
 def send_notification(description, zipcode):
     access_token = get_token
