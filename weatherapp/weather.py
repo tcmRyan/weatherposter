@@ -54,7 +54,9 @@ def get_description(code):
 def update_db():
 	locations = Location.query.all()
 	for location in locations:
-		get_weather(location.zipcode)
+		foo = get_weather(location.zipcode)
+		return foo
+
 
 def send_notification(description, zipcode):
     access_token = get_token
