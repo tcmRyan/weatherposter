@@ -244,7 +244,7 @@ def create_user(user_dict):
     db.session.commit()
     return
 
-@app.route('/update_user', methods=['GET', 'POST'])
+@app.route('/update-user/', methods=['GET', 'POST'])
 def update_user():
     token = get_token()
     zipcode = request.form['zipcode']
@@ -257,7 +257,7 @@ def update_user():
         new_location = Location(request.form['zipcode'], date)
         db.session.add(new_location)
         db.session.commit()
-    return render_template('results.html', users=all_users)
+    return render_template('results.html')
 
 @app.route('/weathertest/', methods=['POST'])
 def weathertest():
