@@ -244,12 +244,15 @@ def create_user(user_dict):
     db.session.commit()
     return
 
+@app.route('/update_user', methods=['GET', 'POST'])
 def update_user():
     token = get_token()
     me = fb_call('me', args={'access_token': access_token})
     record =  User.query.filter(User.facebook_id == me['id']).first()
     record.zipcode = request.form['zipcode']
     record.commit()
+    all_users = User.query.all()
+    return render_template('results.html', users=all_users)
 
 @app.route('/weathertest/', methods=['POST'])
 def weathertest():
