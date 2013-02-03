@@ -34,7 +34,8 @@ def get_weather(zipcode):
 	key = os.environ.get('WORLD_WEATHER_KEY')
 	num_of_days='2'
 	format='json'
-	url = "http://free.worldweatheronline.com/feed/weather.ashx?q=%s&format=%s&num_of_days=%s&key=%s" % (zipcode, format, num_of_days, key)
+
+	url = "http://free.worldweatheronline.com/feed/weather.ashx"
 	return url
 	weather = requests.get(url).json()
 	eval_weather(weather, zipcode)
