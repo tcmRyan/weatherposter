@@ -61,11 +61,11 @@ def update_db():
 
 
 def send_notification(description, zipcode):
-    access_token = get_token
     url = '/weatherposter'
     template = description
     notify_list = User.query.filter(User.zipcode == zipcode)
     for user in notify_list:
+    	access_token = user.access_token
         payload = {'access_token': access_token, 'href': url, 'template': template}
         url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
         r = requests.post(url, params=payload)

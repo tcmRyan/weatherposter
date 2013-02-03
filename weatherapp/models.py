@@ -6,12 +6,14 @@ class User(db.Model):
 	name = db.Column(db.String(80))
 	email = db.Column(db.String(120), unique=True)
 	zipcode = db.Column(db.String(5))
+	access_token = db.Column(db.String(256))
 
-	def __init__(self, facebook_id, name, email, zipcode):
+	def __init__(self, facebook_id, name, email, zipcode, access_token):
 		self.facebook_id = facebook_id
 		self.name = name
 		self.email = email
 		self.zipcode = zipcode
+		self.access_token = access_token
 
 	def __repr__(self):
 		return '<Name %r>' % self.name
