@@ -16,17 +16,15 @@ def eval_weather(weather, zipcode):
 
 	#Book Keeping in the DB
 	entry = Location.query.filter(Location.zipcode == zipcode).first()
-	date = weather['data']['weather'][0]['date']
-	date_notified = datetime.strptime(date, '%Y-%m-%d')
-	notify = (entry.last_updated - date_notified) > timedelta(days = 1)
+	dateString = weather['data']['weather'][0]['date']
+	date = datetime.strptime(dateString, '%Y-%m-%d')
+	notify = (entry.last_updated - date) > timedelta(days = 1)
 
 
 	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
 	if notify:
 		description = get_description(weather['data']['weather'][0]['weatherCode'])
-		date = weather['data']['weather'][0]['date']
-		date_notified = datetime.strptime(date, '%Y-%m-%d')
-		entry.last_updated = date_notified
+		entry.last_updated = date
 		send_notification(description, zipcode)
 	else:
 		return 'Already Notified'
@@ -38,6 +36,7 @@ def get_weather(zipcode):
 	format='json'
 	url = "http://free.worldweatheronline.com/feed/weather.ashx?q=%s&format=%s&num_of_days=%s&key=%s" % (zipcode, format, num_of_days, key)
 	weather = requests.get(url).json()
+	return weather
 	eval_weather(weather, zipcode)
 
 
