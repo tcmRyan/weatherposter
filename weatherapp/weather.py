@@ -32,7 +32,6 @@ def eval_weather(weather, zipcode):
 
 def get_weather(zipcode):
 	key = os.environ.get('WORLD_WEATHER_KEY')
-	return key
 	num_of_days='2'
 	format='json'
 	payload = {'q': zipcode, 'format': format, 'num_of_days': num_of_days, 'key': key}
