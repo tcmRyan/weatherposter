@@ -172,7 +172,7 @@ def index():
 
         me = fb_call('me', args={'access_token': access_token})
         if User.query.filter(User.facebook_id == me['id']).count() == 0:
-            create_user(me)
+            create_user(me, access_token)
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
         likes = fb_call('me/likes',
                         args={'access_token': access_token, 'limit': 4})
@@ -234,12 +234,11 @@ def dbtest():
         all_zipcodes = Location.query.all()
         return render_template('results.html', users=all_users, locations=all_zipcodes)
 
-def create_user(user_dict):
+def create_user(user_dict, access_token):
     facebook_id = user_dict['id']
     name = user_dict['name']
     email = user_dict['email']
     zipcode = None
-    access_token = get_token()
     user = User(facebook_id, name, email, zipcode, access_token)
     db.session.add(user)
     db.session.commit()
