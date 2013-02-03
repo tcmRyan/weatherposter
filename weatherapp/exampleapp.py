@@ -250,7 +250,7 @@ def update_user():
     me = fb_call('me', args={'access_token': token})
     record =  User.query.filter(User.facebook_id == me['id']).first()
     record.zipcode = request.form['zipcode']
-    record.commit()
+    db.session.commit()
     all_users = User.query.all()
     return render_template('results.html', users=all_users)
 
