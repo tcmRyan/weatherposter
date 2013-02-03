@@ -36,7 +36,7 @@ def get_weather(zipcode):
 	format='json'
 	payload = {'q': zipcode, 'format': format, 'num_of_days': num_of_days, 'key': key}
 	url = "http://free.worldweatheronline.com/feed/weather.ashx"
-	weather = requests.get(url, args=payload).json()
+	weather = requests.get(url, params=payload).json()
 	return weather
 	eval_weather(weather, zipcode)
 
@@ -63,6 +63,6 @@ def send_notification(description, zipcode):
     for user in notify_list:
         payload = {'access_token': access_token, 'href': url, 'template': template}
         url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
-        r = requests.post(url, args=payload)
+        r = requests.post(url, params=payload)
     return 'Notifications Sent'
 
