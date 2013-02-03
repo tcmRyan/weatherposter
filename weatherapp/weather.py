@@ -35,6 +35,7 @@ def get_weather(zipcode):
 	num_of_days='2'
 	format='json'
 	url = "http://free.worldweatheronline.com/feed/weather.ashx?q=%s&format=%s&num_of_days=%s&key=%s" % (zipcode, format, num_of_days, key)
+	return url
 	weather = requests.get(url).json()
 	eval_weather(weather, zipcode)
 
@@ -51,7 +52,6 @@ def get_description(code):
 def update_db():
 	locations = Location.query.all()
 	for location in locations:
-		return location.zipcode
 		get_weather(location.zipcode)
 
 def send_notification(description, zipcode):
