@@ -239,6 +239,7 @@ def create_user(user_dict):
     name = user_dict['name']
     email = user_dict['email']
     zipcode = None
+    user = User(facebook_id, name, email, zipcode)
     db.session.add(user)
     db.session.commit()
     return
