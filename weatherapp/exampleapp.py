@@ -247,11 +247,16 @@ def create_user(user_dict):
 @app.route('/update_user', methods=['GET', 'POST'])
 def update_user():
     token = get_token()
+    zipcode = request.form['zipcode']
     me = fb_call('me', args={'access_token': token})
     record =  User.query.filter(User.facebook_id == me['id']).first()
-    record.zipcode = request.form['zipcode']
+    record.zipcode = zipcode
     db.session.commit()
-    all_users = User.query.all()
+    if Location.query.filter(Location.zipcode == zipcode).count() == 0:
+        date = None
+        new_location = Location(request.form['zipcode'], date)
+        db.session.add(new_location)
+        db.session.commit()
     return render_template('results.html', users=all_users)
 
 @app.route('/weathertest/', methods=['POST'])
@@ -261,5 +266,14 @@ def weathertest():
         description = weather.get_weather(zipcode)
         return render_template('test.html', description=description)
 
+def send_notification(description, zipcode):
+    access_token = get_token
+    url = '/weatherposter'
+    template = description
+    notify_list = User.query.filter(User.zipcode == zipcode)
+    for user in notify_list:
+        payload = {'access_token': access_token, 'href': url, 'template': template}
+        url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
+        r = requests.post(url, args=payload)
 
 

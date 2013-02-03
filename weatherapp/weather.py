@@ -1,7 +1,7 @@
 from weatherapp import db
 from models import Location, User
 from xml.dom import minidom
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 import json
 import os
@@ -15,16 +15,17 @@ def eval_weather(weather, zipcode):
 	ignore_codes=['248', '143', '122', '119', '116', '113']
 
 	#Book Keeping in the DB
-	date = datetime.now()
-	entry = Location.query.filter(Location.zipcode == zipcode).update({'last_updated':date})
+	entry = Location.query.filter(Location.zipcode == zipcode).first()
+	notify = (entry.last_updated - date) > timedelta(days = 1)
 
-	if not weather['data']['weather'][0]['weatherCode'] in ignore_codes:
+
+	if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
 		description = get_description(weather['data']['weather'][0]['weatherCode'])
-		#send_notication(description, weather)
-		return description
-	description = get_description(weather['data']['weather'][0]['weatherCode'])
-	print description
-	return description
+		date = weather['data']['weather'][0]['date']
+		date_notified = datetime.strptime(date, '%Y-%m-%d')
+		entry.last_updated = date_notified
+		send_notification(description, zipcode)
+
 	
 
 def get_weather(zipcode):
@@ -50,5 +51,14 @@ def update_db():
 	for zipcode in zipcodes:
 		get_weather(zipcode)
 
+def send_notification(description, zipcode):
+    access_token = get_token
+    url = '/weatherposter'
+    template = description
+    notify_list = User.query.filter(User.zipcode == zipcode)
+    for user in notify_list:
+        payload = {'access_token': access_token, 'href': url, 'template': template}
+        url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
+        r = requests.post(url, args=payload)
 
 
