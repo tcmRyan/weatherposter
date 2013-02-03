@@ -18,7 +18,10 @@ def eval_weather(weather, zipcode):
 	entry = Location.query.filter(Location.zipcode == zipcode).first()
 	dateString = weather['data']['weather'][0]['date']
 	date = datetime.strptime(dateString, '%Y-%m-%d')
-	notify = (entry.last_updated - date) > timedelta(days = 1)
+	if entry.last_updated:
+		notify = (entry.last_updated - date) > timedelta(days = 1)
+	else:
+		notify = True
 
 
 	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
