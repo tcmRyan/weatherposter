@@ -19,13 +19,15 @@ def eval_weather(weather, zipcode):
 	notify = (entry.last_updated - date) > timedelta(days = 1)
 
 
-	if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
+	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
+	if notify:
 		description = get_description(weather['data']['weather'][0]['weatherCode'])
 		date = weather['data']['weather'][0]['date']
 		date_notified = datetime.strptime(date, '%Y-%m-%d')
 		entry.last_updated = date_notified
 		send_notification(description, zipcode)
-
+	else:
+		return 'Already Notified'
 	
 
 def get_weather(zipcode):
@@ -34,7 +36,7 @@ def get_weather(zipcode):
 	format='json'
 	url = "http://free.worldweatheronline.com/feed/weather.ashx?q=%s&format=%s&num_of_days=%s&key=%s" % (zipcode, format, num_of_days, key)
 	weather = requests.get(url).json()
-	return eval_weather(weather, zipcode)
+	eval_weather(weather, zipcode)
 
 
 def get_description(code):
@@ -60,5 +62,5 @@ def send_notification(description, zipcode):
         payload = {'access_token': access_token, 'href': url, 'template': template}
         url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
         r = requests.post(url, args=payload)
-
+    return 'Notifications Sent'
 

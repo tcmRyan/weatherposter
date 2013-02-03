@@ -262,18 +262,7 @@ def update_user():
 @app.route('/weathertest/', methods=['POST'])
 def weathertest():
     if request.method == 'POST':
-        zipcode = Location.query.all()[0].zipcode
-        description = weather.get_weather(zipcode)
-        return render_template('test.html', description=description)
-
-def send_notification(description, zipcode):
-    access_token = get_token
-    url = '/weatherposter'
-    template = description
-    notify_list = User.query.filter(User.zipcode == zipcode)
-    for user in notify_list:
-        payload = {'access_token': access_token, 'href': url, 'template': template}
-        url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
-        r = requests.post(url, args=payload)
+        result = weather.update_db()
+        return render_template('test.html', description=result)
 
 
