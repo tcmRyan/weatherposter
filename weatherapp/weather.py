@@ -37,7 +37,6 @@ def get_weather(zipcode):
 	payload = {'q': zipcode, 'format': format, 'num_of_days': num_of_days, 'key': key}
 	url = "http://free.worldweatheronline.com/feed/weather.ashx"
 	weather = requests.get(url, params=payload).content
-	return weather
 	eval_weather(weather, zipcode)
 
 
