@@ -247,7 +247,7 @@ def create_user(user_dict):
 @app.route('/update_user', methods=['GET', 'POST'])
 def update_user():
     token = get_token()
-    me = fb_call('me', args={'access_token': access_token})
+    me = fb_call('me', args={'access_token': token})
     record =  User.query.filter(User.facebook_id == me['id']).first()
     record.zipcode = request.form['zipcode']
     record.commit()
