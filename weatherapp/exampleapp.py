@@ -173,6 +173,7 @@ def index():
         me = fb_call('me', args={'access_token': access_token})
         if User.query.filter(User.facebook_id == me['id']).count() == 0:
             create_user(me, access_token)
+        return render_template('test.html', access_token)
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
         likes = fb_call('me/likes',
                         args={'access_token': access_token, 'limit': 4})
