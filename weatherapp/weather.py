@@ -43,6 +43,7 @@ def get_weather(zipcode):
 	url = "http://free.worldweatheronline.com/feed/weather.ashx"
 	weather = requests.get(url, params=payload).content
 	weather = json.loads(weather)
+	return weather
 	eval_weather(weather, zipcode)
 
 
@@ -58,7 +59,6 @@ def get_description(code):
 def update_db():
 	locations = Location.query.all()
 	for location in locations:
-		return location.zipcode
 		foo = get_weather(location.zipcode)
 		return foo
 
