@@ -66,6 +66,7 @@ def send_notification(description, zipcode):
     template = description
     notify_list = User.query.filter(User.zipcode == zipcode)
     for user in notify_list:
+    	return user.access_token
     	access_token = user.access_token
         payload = {'access_token': access_token, 'href': url, 'template': template}
         url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
