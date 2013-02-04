@@ -173,7 +173,10 @@ def index():
         me = fb_call('me', args={'access_token': access_token})
         if User.query.filter(User.facebook_id == me['id']).count() == 0:
             create_user(me, access_token)
-        return render_template('test.html', description= access_token)
+        elif User.query.filter(User.facebook_id == me['id']).first():
+            user = User.query.filter(User.facebook_id == me['id']).first()
+            user.access_token = access_token[0]
+            db.session.commit()
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
         likes = fb_call('me/likes',
                         args={'access_token': access_token, 'limit': 4})
@@ -240,7 +243,7 @@ def create_user(user_dict, access_token):
     name = user_dict['name']
     email = user_dict['email']
     zipcode = None
-    user = User(facebook_id, name, email, zipcode, access_token)
+    user = User(facebook_id, name, email, zipcode, access_token[0])
     db.session.add(user)
     db.session.commit()
     return render_template('test.html', description= access_token)
