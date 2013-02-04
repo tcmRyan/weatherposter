@@ -26,10 +26,10 @@ def eval_weather(weather, zipcode):
 
 	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
 	if notify:
-		description = 'hi'#weather['data']['weather'][0]['weatherCode']
-		return description
+		description = weather['data']['weather'][0]['weatherCode']
 		entry.last_updated = date
-		send_notification(description, zipcode)
+		test = send_notification(description, zipcode)
+		return test
 	else:
 		return 'Already Notified'
 	
@@ -65,7 +65,6 @@ def send_notification(description, zipcode):
     url = '/weatherposter'
     template = description
     notify_list = User.query.filter(User.zipcode == zipcode)
-    return notify_list
     for user in notify_list:
     	access_token = user.access_token
         payload = {'access_token': access_token, 'href': url, 'template': template}
