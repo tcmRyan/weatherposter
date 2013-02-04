@@ -42,8 +42,8 @@ def get_weather(zipcode):
 	url = "http://free.worldweatheronline.com/feed/weather.ashx"
 	weather = requests.get(url, params=payload).content
 	weather = json.loads(weather)
-	eval_weather(weather, zipcode)
-
+	test = eval_weather(weather, zipcode)
+	return test
 
 def get_description(code):
 	doc = os.path.dirname(__file__)
