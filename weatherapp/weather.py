@@ -27,7 +27,7 @@ def eval_weather(weather, zipcode):
 
 	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
 	if notify:
-		description = get_description(weather['data']['weather'][0]['weatherCode'])
+		description = weather['data']['weather'][0]['weatherCode']
 		return description
 		entry.last_updated = date
 		send_notification(description, zipcode)
@@ -43,7 +43,6 @@ def get_weather(zipcode):
 	url = "http://free.worldweatheronline.com/feed/weather.ashx"
 	weather = requests.get(url, params=payload).content
 	weather = json.loads(weather)
-	return weather
 	eval_weather(weather, zipcode)
 
 
