@@ -28,6 +28,7 @@ def eval_weather(weather, zipcode):
 	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
 	if notify:
 		description = get_description(weather['data']['weather'][0]['weatherCode'])
+		return description
 		entry.last_updated = date
 		send_notification(description, zipcode)
 	else:
