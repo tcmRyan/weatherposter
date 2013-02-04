@@ -21,15 +21,12 @@ def eval_weather(weather, zipcode):
 	if entry.last_updated:
 		notify = (entry.last_updated - date) > timedelta(days = 1)
 		notify = True
-		return 'True'
 	else:
 		notify = True
-		return 'False'
 
 
 	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
 	if notify:
-		return weather
 		description = get_description(weather['data']['weather'][0]['weatherCode'])
 		return description
 		entry.last_updated = date
@@ -61,6 +58,7 @@ def get_description(code):
 def update_db():
 	locations = Location.query.all()
 	for location in locations:
+		return location.zipcode
 		foo = get_weather(location.zipcode)
 		return foo
 
