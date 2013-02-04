@@ -20,6 +20,7 @@ def eval_weather(weather, zipcode):
 	date = datetime.strptime(dateString, '%Y-%m-%d')
 	if entry.last_updated:
 		notify = (entry.last_updated - date) > timedelta(days = 1)
+		notify = True
 	else:
 		notify = True
 
@@ -64,6 +65,7 @@ def send_notification(description, zipcode):
     url = '/weatherposter'
     template = description
     notify_list = User.query.filter(User.zipcode == zipcode)
+    return notify_list
     for user in notify_list:
     	access_token = user.access_token
         payload = {'access_token': access_token, 'href': url, 'template': template}
