@@ -246,7 +246,6 @@ def create_user(user_dict, access_token):
     user = User(facebook_id, name, email, zipcode, access_token[0])
     db.session.add(user)
     db.session.commit()
-    return render_template('test.html', description= access_token)
 
 @app.route('/update-user/', methods=['GET', 'POST'])
 def update_user():
