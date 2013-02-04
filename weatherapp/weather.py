@@ -70,5 +70,5 @@ def send_notification(description, zipcode):
         payload = {'access_token': access_token, 'href': url, 'template': template}
         url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
         r = requests.post(url, params=payload)
-    return 'Notifications Sent'
+    return r.content
 
