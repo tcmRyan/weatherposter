@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 import os
+import fb_lib
 
 def eval_weather(weather, zipcode):
 	"""
@@ -65,9 +66,9 @@ def send_notification(description, zipcode):
     url = '/weatherposter'
     template = description
     notify_list = User.query.filter(User.zipcode == zipcode)
+    FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
+	access_token = fb_lib.fbapi_get_application_access_token(FB_APP_ID)
     for user in notify_list:
-    	return user.access_token
-    	access_token = user.access_token
         payload = {'access_token': access_token, 'href': url, 'template': template}
         url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
         r = requests.post(url, params=payload)
