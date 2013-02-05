@@ -107,20 +107,20 @@ def fb_call(call, args=None):
     r = requests.get(url, params=args)
     return json.loads(r.content)
 
-def get_home():
-    return 'https://' + request.host + '/'
+def get_home(host):
+    return 'https://' + host + '/'
 
 
-def get_token():
+def get_token(code, cookies):
 
-    if request.args.get('code', None):
-        return fbapi_auth(request.args.get('code'))[0]
+    if code:
+        return fbapi_auth(code)[0]
 
     cookie_key = 'fbsr_{0}'.format(FB_APP_ID)
 
-    if cookie_key in request.cookies:
+    if cookie_key in cookies:
 
-        c = request.cookies.get(cookie_key)
+        c = cookies.get(cookie_key)
         encoded_data = c.split('.', 2)
 
         sig = encoded_data[0]

@@ -22,8 +22,10 @@ FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # print get_home()
+    code = request.args.get('code', None)
+    cookies = request.cookies
 
-    access_token = fb_lib.get_token()
+    access_token = fb_lib.get_token(code, cookies)
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
@@ -43,8 +45,8 @@ def index():
                           args={'access_token': access_token, 'limit': 4})
         photos = fb_lib.fb_call('me/photos',
                          args={'access_token': access_token, 'limit': 16})
-
-        redir = fb_lib.get_home() + 'close/'
+        host = request.host
+        redir = fb_lib.get_home(host) + 'close/'
         POST_TO_WALL = ("https://www.facebook.com/dialog/feed?redirect_uri=%s&"
                         "display=popup&app_id=%s" % (redir, FB_APP_ID))
 
@@ -56,7 +58,7 @@ def index():
 
         SEND_TO = ('https://www.facebook.com/dialog/send?'
                    'redirect_uri=%s&display=popup&app_id=%s&link=%s'
-                   % (redir, FB_APP_ID, get_home()))
+                   % (redir, FB_APP_ID, get_home(host)))
 
         url = request.url
 
@@ -108,7 +110,9 @@ def create_user(user_dict, access_token):
 
 @app.route('/update-user/', methods=['GET', 'POST'])
 def update_user():
-    token = fb_lib.get_token()
+    code = request.args.get('code', None)
+    cookies = request.cookies
+    token = fb_lib.get_token(code, cookies)
     zipcode = request.form['zipcode']
     me = fb_lib.fb_call('me', args={'access_token': token})
     record =  User.query.filter(User.facebook_id == me['id']).first()
