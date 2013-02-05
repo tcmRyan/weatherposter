@@ -8,6 +8,7 @@ from weatherapp import app, db
 from models import User, Location
 import weather
 import fb_lib
+import os
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
