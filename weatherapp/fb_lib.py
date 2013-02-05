@@ -7,6 +7,7 @@ import json
 import hashlib
 from datetime import datetime
 from base64 import urlsafe_b64decode, urlsafe_b64encode
+from weatherapp import app
 
 import requests
 
