@@ -65,7 +65,7 @@ def fbapi_get_string(path,
 def fbapi_auth(code, request):
     params = {'client_id': app.config['FBAPI_APP_ID'],
               'redirect_uri': get_home(request.host),
-              'client_secret': app.config['FBAPI_APP_SECRET']/,
+              'client_secret': app.config['FBAPI_APP_SECRET'],
               'code': code}
 
     result = fbapi_get_string(path=u"/oauth/access_token?", params=params,
