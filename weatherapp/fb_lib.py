@@ -119,6 +119,7 @@ def get_token(code, cookies):
         return fbapi_auth(code)[0]
 
     cookie_key = 'fbsr_{0}'.format(FB_APP_ID)
+    sys.stdout.write('cookie_key: ' + cookie_key)
 
     if cookie_key in cookies:
 
