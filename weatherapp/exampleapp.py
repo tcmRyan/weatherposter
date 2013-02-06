@@ -25,7 +25,8 @@ def index():
     # print get_home()
     code = request.args.get('code', None)
     cookies = request.cookies
-
+    sys.stdout.write('code: ' + str(code))
+    sys.stdout.write('cookies: ' + str(cookies))
     access_token = fb_lib.get_token(code, cookies)
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')

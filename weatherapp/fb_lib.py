@@ -8,6 +8,7 @@ import hashlib
 from datetime import datetime
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from weatherapp import app
+import sys
 
 import requests
 
@@ -114,13 +115,16 @@ def get_home(host):
 def get_token(code, cookies):
 
     if code:
+    	sys.stdout.write('have code')
         return fbapi_auth(code)[0]
 
     cookie_key = 'fbsr_{0}'.format(FB_APP_ID)
 
     if cookie_key in cookies:
 
+
         c = cookies.get(cookie_key)
+        sys.stdout.write('cookie: ' str(c))
         encoded_data = c.split('.', 2)
 
         sig = encoded_data[0]
