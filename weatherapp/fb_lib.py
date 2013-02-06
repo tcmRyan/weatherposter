@@ -113,7 +113,7 @@ def get_home(host):
 
 
 def get_token(request):
-	code = request.args.get('code', None)
+    code = request.args.get('code', None)
     cookies = request.cookies
 
     if code:
