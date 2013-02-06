@@ -9,6 +9,7 @@ from models import User, Location
 import weather
 import fb_lib
 import os
+import sys
 import json
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
@@ -29,9 +30,12 @@ def index():
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
+    sys.stdout(access_token)
+
     if access_token:
 
         me = fb_lib.fb_call('me', args={'access_token': access_token})
+
         if User.query.filter(User.facebook_id == me['id']).count() == 0:
             create_user(me, access_token)
         elif User.query.filter(User.facebook_id == me['id']).first():
