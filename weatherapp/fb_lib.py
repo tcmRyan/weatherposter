@@ -124,7 +124,7 @@ def get_token(code, cookies):
 
 
         c = cookies.get(cookie_key)
-        sys.stdout.write('cookie: ' str(c))
+        sys.stdout.write('cookie: ' + str(c))
         encoded_data = c.split('.', 2)
 
         sig = encoded_data[0]
