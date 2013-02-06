@@ -63,7 +63,7 @@ def index():
 
         SEND_TO = ('https://www.facebook.com/dialog/send?'
                    'redirect_uri=%s&display=popup&app_id=%s&link=%s'
-                   % (redir, FB_APP_ID, get_home(host)))
+                   % (redir, FB_APP_ID, fb_lib.get_home(host)))
 
         url = request.url
 
