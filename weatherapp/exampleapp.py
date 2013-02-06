@@ -30,7 +30,7 @@ def index():
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
-    sys.stdout.write(access_token)
+    sys.stdout.write(str(access_token))
 
     if access_token:
 
