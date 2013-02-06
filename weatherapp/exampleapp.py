@@ -23,11 +23,9 @@ FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # print get_home()
-    code = request.args.get('code', None)
-    cookies = request.cookies
     sys.stdout.write('code: ' + str(code))
     sys.stdout.write('cookies: ' + str(cookies))
-    access_token = fb_lib.get_token(code, cookies)
+    access_token = fb_lib.get_token(request)
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
@@ -115,9 +113,7 @@ def create_user(user_dict, access_token):
 
 @app.route('/update-user/', methods=['GET', 'POST'])
 def update_user():
-    code = request.args.get('code', None)
-    cookies = request.cookies
-    token = fb_lib.get_token(code, cookies)
+    token = fb_lib.get_token(request)
     zipcode = request.form['zipcode']
     me = fb_lib.fb_call('me', args={'access_token': token})
     record =  User.query.filter(User.facebook_id == me['id']).first()

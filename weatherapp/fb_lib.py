@@ -20,11 +20,11 @@ FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
 FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
 
 
-def oauth_login_url(preserve_path=True, next_url=None):
+def oauth_login_url(preserve_path=True, next_url=None, request):
     fb_login_uri = ("https://www.facebook.com/dialog/oauth"
                     "?client_id=%s&redirect_uri=%s" %
-                    (app.config['FB_APP_ID'], get_home()))
-    print "Get_home %s" % get_home()
+                    (app.config['FB_APP_ID'], get_home(request.host)))
+    print "Get_home %s" % get_home(request.host)
 
     if app.config['FBAPI_SCOPE']:
         fb_login_uri += "&scope=%s" % ",".join(app.config['FBAPI_SCOPE'])
@@ -62,10 +62,10 @@ def fbapi_get_string(path,
     return result
 
 
-def fbapi_auth(code):
-    params = {'client_id': app.config['FB_APP_ID'],
-              'redirect_uri': get_home(),
-              'client_secret': app.config['FB_APP_SECRET'],
+def fbapi_auth(code, request):
+    params = {'client_id': app.config['FBAPI_APP_ID'],
+              'redirect_uri': get_home(request.host),
+              'client_secret': app.config['FBAPI_APP_SECRET']/,
               'code': code}
 
     result = fbapi_get_string(path=u"/oauth/access_token?", params=params,
@@ -82,7 +82,7 @@ def fbapi_get_application_access_token(id):
     token = fbapi_get_string(
         path=u"/oauth/access_token",
         params=dict(grant_type=u'client_credentials', client_id=id,
-                    client_secret=app.config['FB_APP_SECRET']),
+                    client_secret=app.config['FBAPI_APP_SECRET']),
         domain=u'graph')
 
     token = token.split('=')[-1]
@@ -112,11 +112,13 @@ def get_home(host):
     return 'https://' + host + '/'
 
 
-def get_token(code, cookies):
+def get_token(request):
+	code = request.args.get('code', None)
+    cookies = request.cookies
 
     if code:
     	sys.stdout.write('have code')
-        return fbapi_auth(code)[0]
+        return fbapi_auth(code, request)[0]
 
     cookie_key = 'fbsr_{0}'.format(FB_APP_ID)
     sys.stdout.write('cookie_key: ' + cookie_key)
