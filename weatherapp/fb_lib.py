@@ -20,7 +20,7 @@ FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
 FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
 
 
-def oauth_login_url(preserve_path=True, next_url=None, request):
+def oauth_login_url(request, preserve_path=True, next_url=None):
     fb_login_uri = ("https://www.facebook.com/dialog/oauth"
                     "?client_id=%s&redirect_uri=%s" %
                     (app.config['FB_APP_ID'], get_home(request.host)))
