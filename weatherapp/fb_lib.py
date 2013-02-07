@@ -56,9 +56,9 @@ def fbapi_get_string(path,
 
     url = u'https://' + domain + u'.facebook.com' + path
     params_encoded = encode_func(params)
-    return params_encoded
+    sys.stdout.write(params_encoded) 
     url = url + params_encoded
-    return url + 'tst'
+    sys.stdout.write(url)
     result = requests.get(url).content
 
     return result
