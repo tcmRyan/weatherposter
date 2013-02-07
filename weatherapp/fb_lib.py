@@ -57,6 +57,7 @@ def fbapi_get_string(path,
     url = u'https://' + domain + u'.facebook.com' + path
     params_encoded = encode_func(params)
     url = url + params_encoded
+    return url
     result = requests.get(url).content
 
     return result
@@ -84,7 +85,6 @@ def fbapi_get_application_access_token(id):
         params=dict(grant_type=u'client_credentials', client_id=id,
                     client_secret=app.config['FBAPI_APP_SECRET']),
         domain=u'graph')
-    return token
     token = token.split('=')[-1]
     if not str(id) in token:
         print 'Token mismatch: %s not in %s' % (id, token)
