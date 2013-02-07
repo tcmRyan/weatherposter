@@ -82,7 +82,7 @@ def fbapi_auth(code, request):
 
 def fbapi_get_application_access_token(id):
     token = fbapi_get_string(
-        path=u"/oauth/access_token",
+        path=u"/oauth/access_token?",
         params=dict(grant_type=u'client_credentials', client_id=id,
                     client_secret=app.config['FBAPI_APP_SECRET']),
         domain=u'graph')
