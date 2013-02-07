@@ -68,6 +68,7 @@ def send_notification(description, zipcode):
     notify_list = User.query.filter(User.zipcode == zipcode)
     FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
     access_token = fb_lib.fbapi_get_application_access_token(FB_APP_ID)
+    return access_token
     for user in notify_list:
         payload = {'access_token': access_token, 'href': url, 'template': template}
         url = "https://graph.facebook.com/%s/notifications" % user.facebook_id
