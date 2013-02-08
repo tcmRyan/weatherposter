@@ -24,7 +24,7 @@ FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
 def index():
     # print get_home()
     sys.stdout.write("WTF!!!!!!!!")
-    sys.stdout.write(request.args.get('code', None))
+    sys.stdout.write(str(request.args.get('code', None)))
     access_token = fb_lib.get_token(request)
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
