@@ -123,7 +123,7 @@ def get_token(request):
 
     cookie_key = 'fbsr_{0}'.format(FB_APP_ID)
     sys.stdout.write('cookie_key: ' + cookie_key)
-    sys.stdout.write('cookies: ' + cookies)
+    sys.stdout.write('cookies: ' + str(cookies))
 
     if cookie_key in cookies:
 
