@@ -12,7 +12,6 @@ def eval_weather(weather, zipcode):
 	Determine if the weather is good or bad.  If the weather is fine we don't send an alert.
 	Weather codes are found in the wwoConditionCodes.xml
 	"""
-	#weather = json.loads(weather)
 	ignore_codes=['248', '143', '122', '119', '116', '113']
 
 	#Book Keeping in the DB

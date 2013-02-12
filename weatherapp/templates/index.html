@@ -10,11 +10,11 @@
   <div>
     <h1>Welcome, <strong>{{me.name}}</strong></h1>
     <p class="tagline">
-      This is your app
+      This app will send you a Facebook notification whenever there is inclement weather for your zipcode. 
       <a href="{{app.link}}">{{app.name}}</a>
     </p>
     <div id="share-app">
-      <p>Share your app:</p>
+      <p>Share this app:</p>
       <ul>
         <li>
           <a href="#" class="facebook-button" id="postToWall" data-url="{{ url }}">
@@ -45,51 +45,5 @@
         <input type='text' name='zipcode' size='5' maxLength='5'>
         <input type='submit' value='Submit'>
       </form>
-      <div class="list">
-        <h3>A few of your friends</h3>
-        <ul class="friends">{% for friend in friends.data %}
-        <li>
-          <a href="#" onclick="window.open('http://www.facebook.com/{{friend.id}}')">
-            <img src="https://graph.facebook.com/{{friend.id}}/picture" alt="{{friend.name}}">
-            {{friend.name}}
-          </a>
-        </li>{% endfor %}</ul>
-      </div>
-      <div class="list inline">
-        <h3>Recent photos</h3>
-        <ul class="photos">
-          {% for photo in photos.data %}
-            {% if loop.index0%4 == 0 %}
-          <li class="first-column" style="background-image: url({{photo.picture}})">
-            {% else %}
-          <li style="background-image: url({{photo.picture}})">
-            {% endif %}
-            <a href="#" onclick="window.open('http://www.facebook.com/{{photo.id}}')">
-              {{photo.name}}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="list">
-        <h3>Things you like</h3>
-        <ul class="things">{% for like in likes.data %}
-        <li>
-          <a href="#" onclick="window.open('http://www.facebook.com/{{like.id}}')">
-            <img src="https://graph.facebook.com/{{like.id}}/picture?type=square" alt="{{like.name}}">
-            {{like.name}}
-          </a>
-        </li>{% endfor %}</ul>
-      </div>
-      <div class="list">
-        <h3>Friends using this app</h3>
-        <ul class="friends">{% for friend in app_friends %}
-        <li>
-          <a href="#" onclick="window.open('http://www.facebook.com/{{friend.uid}}')">
-            <img src="https://graph.facebook.com/{{friend.uid}}/picture?type=square" alt="{{friend.name}}">
-            {{friend.name}}
-            </a>
-        </li>{% endfor %}</ul>
-      </div>
     </section>
 {% endblock%}
