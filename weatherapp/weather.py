@@ -24,16 +24,19 @@ def eval_weather(weather, zipcode):
 	else:
 		notify = True
 
-	#if not weather['data']['weather'][0]['weatherCode'] in ignore_codes and notify:
+	code = weather['data']['weather'][0]['weatherCode']
+    description = get_description(code)
+
+	#if not code in ignore_codes and notify:
 	if notify:
-		code = weather['data']['weather'][0]['weatherCode']
-		description = get_description(code)
 		entry.last_updated = date
 		test = send_notification(description, zipcode)
 		return test
 	else:
-		return 'Already Notified'
-	
+		if not code in ignore_codes:
+			return 'Good Weather: %s' %  description
+		else:
+			return 'Already Notified'
 
 def get_weather(zipcode):
 	key = os.environ.get('WORLD_WEATHER_KEY')
