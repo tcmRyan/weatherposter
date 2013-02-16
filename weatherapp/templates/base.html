@@ -111,7 +111,7 @@
           // window.location.reload() because if this is in a canvas there was a
           // post made to this page and a reload will trigger a message to the
           // user asking if they want to send data again.
-          window.location = window.location;
+          window.location = window.location.reload();
         });
 
         FB.Canvas.setAutoGrow();
@@ -134,5 +134,6 @@
     </header>
     {% block content%}
     {% endblock %}
+    Powered by <a href="http://www.worldweatheronline.com/" title="Free local weather content provider" target="_blank">World Weather Online</a>
   </body>
 </html>
