@@ -25,7 +25,7 @@ def eval_weather(weather, zipcode):
 		notify = True
 
 	code = weather['data']['weather'][0]['weatherCode']
-    description = get_description(code)
+	description = get_description(code)
 
 	#if not code in ignore_codes and notify:
 	if notify:
