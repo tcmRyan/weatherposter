@@ -21,6 +21,8 @@ def eval_weather(weather, zipcode):
 	if entry.last_updated:
 		notify = (entry.last_updated - date) > timedelta(days = 1)
 	else:
+		entry.last_updated = date
+		entry.save()
 		notify = True
 
 	code = weather['data']['weather'][0]['weatherCode']
@@ -28,6 +30,7 @@ def eval_weather(weather, zipcode):
 
 	if not (code in ignore_codes) and notify:
 		entry.last_updated = date
+		entry.save()
 		test = send_notification(description, zipcode)
 		return test
 	else:
