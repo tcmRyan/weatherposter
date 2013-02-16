@@ -5,7 +5,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask import request, redirect, render_template, url_for
 
 from weatherapp import app, db
-from models import User, Location
+from models import FBUser, Location
 import weather
 import fb_lib
 import os
@@ -35,10 +35,10 @@ def index():
 
         me = fb_lib.fb_call('me', args={'access_token': access_token})
 
-        if User.query.filter(User.facebook_id == me['id']).count() == 0:
+        if FBUser.query.filter(FBUser.facebook_id == me['id']).count() == 0:
             create_user(me, access_token)
-        elif User.query.filter(User.facebook_id == me['id']).first():
-            user = User.query.filter(User.facebook_id == me['id']).first()
+        elif FBUser.query.filter(FBUser.facebook_id == me['id']).first():
+            user = FBUser.query.filter(FBUser.facebook_id == me['id']).first()
             user.access_token = access_token[0]
             db.session.commit()
         fb_app = fb_lib.fb_call(FB_APP_ID, args={'access_token': access_token})
@@ -90,10 +90,10 @@ def dbtest():
         name = request.form.get('name')
         email = request.form.get('email')
         zipcode = request.form.get('zipcode')
-        user = User(name, email, zipcode)
+        user = FBUser(name, email, zipcode)
         db.session.add(user)
         db.session.commit()
-        all_users = User.query.all()
+        all_users = FBUser.query.all()
         if Location.query.filter(Location.zipcode == zipcode).count() == 0:
             date = datetime.now()
             new_location = Location(zipcode, date)
@@ -107,7 +107,7 @@ def create_user(user_dict, access_token):
     name = user_dict['name']
     email = user_dict['email']
     zipcode = None
-    user = User(facebook_id, name, email, zipcode, access_token[0])
+    user = FBUser(facebook_id, name, email, zipcode, access_token[0])
     db.session.add(user)
     db.session.commit()
 
@@ -116,7 +116,7 @@ def update_user():
     token = fb_lib.get_token(request)
     zipcode = request.form['zipcode']
     me = fb_lib.fb_call('me', args={'access_token': token})
-    record =  User.query.filter(User.facebook_id == me['id']).first()
+    record =  FBUser.query.filter(FBUser.facebook_id == me['id']).first()
     record.zipcode = zipcode
     db.session.commit()
     if Location.query.filter(Location.zipcode == zipcode).count() == 0:

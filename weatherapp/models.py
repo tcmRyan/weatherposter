@@ -1,7 +1,7 @@
 from weatherapp import db
 from datetime import datetime
 
-class User(db.Model):
+class FBUser(db.Model):
 	facebook_id = db.Column(db.String(120), primary_key=True)
 	name = db.Column(db.String(80))
 	email = db.Column(db.String(120), unique=True)

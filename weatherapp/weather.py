@@ -1,5 +1,5 @@
 from weatherapp import db
-from models import Location, User
+from models import Location, FBUser
 from xml.dom import minidom
 from datetime import datetime, timedelta
 import requests
@@ -63,7 +63,7 @@ def update_db():
 def send_notification(description, zipcode):
     url = '/weatherposter'
     template = description
-    notify_list = User.query.filter(User.zipcode == zipcode)
+    notify_list = FBUser.query.filter(FBUser.zipcode == zipcode)
     FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
     access_token = fb_lib.fbapi_get_application_access_token(FB_APP_ID)
     for user in notify_list:
