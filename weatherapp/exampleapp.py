@@ -116,6 +116,7 @@ def update_user():
     token = fb_lib.get_token(request)
     zipcode = request.form['zipcode']
     me = fb_lib.fb_call('me', args={'access_token': token})
+    app.logger.info("Updating User: %s" % me)
     record =  FBUser.query.filter(FBUser.facebook_id == me['id']).first()
     record.zipcode = zipcode
     db.session.commit()
