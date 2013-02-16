@@ -130,7 +130,9 @@ def update_user():
 @app.route('/weathertest/', methods=['POST'])
 def weathertest():
     if request.method == 'POST':
+        app.logger.info('Starting Update')
         result = weather.update_db()
+        app.logger.info(result)
         return render_template('test.html', description=result)
 
 
