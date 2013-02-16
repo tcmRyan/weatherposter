@@ -19,16 +19,14 @@ def eval_weather(weather, zipcode):
 	dateString = weather['data']['weather'][0]['date']
 	date = datetime.strptime(dateString, '%Y-%m-%d')
 	if entry.last_updated:
-		#notify = (entry.last_updated - date) > timedelta(days = 1)
-		notify = True
+		notify = (entry.last_updated - date) > timedelta(days = 1)
 	else:
 		notify = True
 
 	code = weather['data']['weather'][0]['weatherCode']
 	description = get_description(code)
 
-	#if not code in ignore_codes and notify:
-	if notify:
+	if not (code in ignore_codes) and notify:
 		entry.last_updated = date
 		test = send_notification(description, zipcode)
 		return test
