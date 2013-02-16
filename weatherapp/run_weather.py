@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 import weather
+import requests
 
 def update_db():
-	weather.update_db()
+	requests.post('http://weatherposter.herokuapp.com')
 
 if __name__ == '__main__':
 	update_db()
